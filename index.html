@@ -1,121 +1,206 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <!-- 适配移动端屏幕 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>圣诞树配置</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>定制你的 AI 圣诞树</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
         }
+
         .container {
             background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 15px;
             backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.18);
             width: 90%;
             max-width: 400px;
+            text-align: center;
         }
-        h1 { margin-bottom: 1.5rem; font-size: 1.8rem; }
-        input[type="text"] {
+
+        h1 {
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+
+        input[type="text"], 
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-sizing: border-box;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* 文件上传按钮美化 */
+        input[type="file"]::file-selector-button {
+            margin-right: 10px;
+            border: none;
+            background: #d42f2f;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: background .2s ease-in-out;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: #b92b2b;
+        }
+
+        button.submit-btn {
             width: 100%;
             padding: 12px;
-            margin-bottom: 15px;
             border: none;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
-        .file-upload {
-            margin-bottom: 20px;
-            border: 2px dashed rgba(255,255,255,0.5);
-            padding: 20px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-        button {
-            background: #d42f2f;
-            color: white;
-            border: none;
-            padding: 12px 30px;
             border-radius: 25px;
-            font-size: 1.1rem;
+            background: linear-gradient(45deg, #d42f2f, #ff6b6b);
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s;
-            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 1rem;
         }
-        button:active { transform: scale(0.95); }
-        .tip { font-size: 0.8rem; color: #ccc; margin-top: 10px; }
+
+        button.submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 47, 47, 0.4);
+        }
+
+        button.submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .preview-img {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+            border-radius: 8px;
+            display: none;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .note {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎄 定制你的圣诞树</h1>
+        <h1>🎄 定制圣诞树</h1>
         
-        <input type="text" id="greeting" placeholder="输入祝福语 (例如: Merry Christmas)" maxlength="20">
-        
-        <div class="file-upload">
-            <label for="photo" style="cursor: pointer; display: block;">
-                <div>📸 点击上传照片</div>
-                <div style="font-size: 0.8rem; color: #aaa; margin-top:5px;">(建议使用小图或截图，避免卡顿)</div>
-            </label>
-            <input type="file" id="photo" accept="image/*" style="display: none;">
-            <div id="file-name" style="margin-top: 10px; font-size: 0.9rem; color: #4caf50;"></div>
+        <div class="form-group">
+            <label for="greeting">写一句祝福语 (建议10字以内):</label>
+            <input type="text" id="greeting" placeholder="Merry Christmas" maxlength="20">
         </div>
 
-        <button onclick="saveAndGo()">生成并查看</button>
-        <div class="tip">生成后请允许使用摄像头以进行手势互动</div>
+        <div class="form-group">
+            <label for="photo">上传一张照片 (可选):</label>
+            <input type="file" id="photo" accept="image/*">
+            <p class="note">注意：iPad请尽量使用截图或小图，避免存储空间不足。</p>
+            <img id="preview" class="preview-img" alt="预览">
+        </div>
+
+        <button class="submit-btn" onclick="saveAndGo()">生成并查看</button>
     </div>
 
     <script>
-        const fileInput = document.getElementById('photo');
-        const fileNameDisplay = document.getElementById('file-name');
-        let base64Image = '';
-
-        fileInput.addEventListener('change', function(e) {
+        // 图片预览逻辑
+        document.getElementById('photo').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                // 限制图片大小为 2MB，防止 iPad 崩溃
-                if (file.size > 2 * 1024 * 1024) {
-                    alert("图片太大了！请使用 2MB 以下的图片。");
-                    this.value = ''; 
-                    return;
-                }
-                fileNameDisplay.textContent = "已选择: " + file.name;
                 const reader = new FileReader();
-                reader.onload = function(event) {
-                    base64Image = event.target.result;
-                };
+                reader.onload = function(e) {
+                    const img = document.getElementById('preview');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                }
                 reader.readAsDataURL(file);
             }
         });
 
         function saveAndGo() {
             const greeting = document.getElementById('greeting').value || "Merry Christmas";
+            const photoInput = document.getElementById('photo');
             
             try {
                 localStorage.setItem('xmas_greeting', greeting);
-                if (base64Image) {
-                    localStorage.setItem('xmas_photo', base64Image);
+
+                if (photoInput.files && photoInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            // 简单的图片压缩逻辑（如果图片太大，localStorage存不下）
+                            const img = new Image();
+                            img.src = e.target.result;
+                            img.onload = function() {
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+                                // 限制最大宽度为 500px
+                                const maxWidth = 500;
+                                const scale = maxWidth / img.width;
+                                const width = maxWidth;
+                                const height = img.height * scale;
+                                
+                                canvas.width = width;
+                                canvas.height = height;
+                                ctx.drawImage(img, 0, 0, width, height);
+                                
+                                // 压缩质量 0.7
+                                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                                localStorage.setItem('xmas_photo', compressedDataUrl);
+                                window.location.href = 'tree.html';
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            alert("图片处理出错，请换一张试试。");
+                            window.location.href = 'tree.html';
+                        }
+                    };
+                    reader.readAsDataURL(photoInput.files[0]);
                 } else {
                     localStorage.removeItem('xmas_photo');
+                    window.location.href = 'tree.html';
                 }
-                // 关键修改：跳转到 tree.html
-                window.location.href = 'tree.html';
             } catch (e) {
-                alert("存储空间不足。请换一张更小的图片重试。");
-                console.error(e);
+                alert("存储空间不足。请不要上传图片，或者换一张非常小的图片。");
+                // 即使出错也尝试跳转
+                window.location.href = 'tree.html';
             }
         }
     </script>
